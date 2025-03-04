@@ -32,6 +32,9 @@ import kotlinx.coroutines.launch
 class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
     val allItems: LiveData<List<Item>> = itemDao.getItems().asLiveData()
 
+    fun retrieveItem(id: Int): LiveData<Item> {
+        return itemDao.getItem(id).asLiveData()
+    }
     /**
      * Inserts the new Item into database.
      */
