@@ -43,6 +43,28 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
         insertItem(newItem)
     }
 
+    fun sellItem(item: Item) {
+        if (item.quantityInStock > 0) {
+            val newItem = item.copy(quantityInStock = item.quantityInStock - 1)
+            updateItem(newItem)
+        }
+    }
+
+    fun isStockAvailable(item: Item): Boolean {
+        return (item.quantityInStock > 0)
+    }
+
+    fun deleteItem(item: Item) {
+        viewModelScope.launch {
+            itemDao.delete(item)
+        }
+    }
+
+    private fun updateItem(item: Item) {
+        viewModelScope.launch {
+            itemDao.update(item)
+        }
+    }
     /**
      * Launching a new coroutine to insert an item in a non-blocking way
      */
